@@ -4,7 +4,7 @@ import {customElement} from 'custom-element-decorator';
 import {html, LitElement} from 'lit';
 import {withStyles} from 'lit-with-styles';
 import {query, state} from 'lit/decorators.js';
-import {FormBuilder} from '../forms/FormBuilder.js';
+import {FormBuilder} from '@vdegenne/forms/FormBuilder';
 import {store} from '../store.js';
 import {themeStore} from '../styles/themeStore.js';
 import {renderThemeElements} from '../styles/theme-elements.js';
