@@ -43,10 +43,12 @@ export class SettingsDialog extends LitElement {
 					<section>
 						<h3>Video</h3>
 						${F.TEXTFIELD('Small step', 'smallStep', {
+							type: 'number',
 							suffixText: 'seconds',
 							resetButton: false,
 						})}
 						${F.TEXTFIELD('Big step', 'bigStep', {
+							type: 'number',
 							suffixText: 'seconds',
 							resetButton: false,
 						})}

@@ -1,9 +1,8 @@
 import {ReactiveController} from '@snar/lit';
 import {MGamepad, MiniGamepad, Mode} from '@vdegenne/mini-gamepad';
-import {getElement} from 'html-vision';
 import {state} from 'lit/decorators.js';
-import {getYouTubeVideoElement} from './utils.js';
 import {store} from './store.js';
+import {getYouTubeVideoElement} from './utils.js';
 
 class GamepadController extends ReactiveController {
 	@state() gamepad: MGamepad | undefined;
@@ -58,13 +57,6 @@ class GamepadController extends ReactiveController {
 						break;
 				}
 			});
-			gamepad.for(RIGHT_BUTTONS_LEFT).before(async ({mode}) => {
-				switch (mode) {
-					case Mode.NORMAL:
-						(await getYouTubeVideoElement()).fullscreen();
-						break;
-				}
-			});
 
 			gamepad.for(RIGHT_STICK_LEFT).before(({mode}) => {
 				switch (mode) {
@@ -79,16 +71,36 @@ class GamepadController extends ReactiveController {
 				}
 			});
 
-			gamepad.for(RIGHT_BUTTONS_BOTTOM).before(async ({mode}) => {
+			gamepad.for(RIGHT_BUTTONS_TOP).before(async ({mode}) => {
 				switch (mode) {
 					case Mode.NORMAL:
 						break;
-					case Mode.TERTIARY:
+				}
+			});
+
+			gamepad.for(RIGHT_BUTTONS_BOTTOM).before(async ({mode}) => {
+				const video = await getYouTubeVideoElement();
+				switch (mode) {
+					case Mode.NORMAL:
+						video.rewind(1 / 30);
 						break;
 				}
 			});
-			gamepad.for(RIGHT_BUTTONS_RIGHT).before(({mode}) => {
-				if (mode === Mode.NORMAL) {
+
+			gamepad.for(RIGHT_BUTTONS_LEFT).before(async ({mode}) => {
+				switch (mode) {
+					case Mode.NORMAL:
+						(await getYouTubeVideoElement()).fullscreen();
+						break;
+				}
+			});
+
+			gamepad.for(RIGHT_BUTTONS_RIGHT).before(async ({mode}) => {
+				const video = await getYouTubeVideoElement();
+				switch (mode) {
+					case Mode.NORMAL:
+						video.fastForward(1 / 30);
+						break;
 				}
 			});
 
@@ -105,28 +117,28 @@ class GamepadController extends ReactiveController {
 			});
 
 			gamepad.for(LEFT_BUTTONS_LEFT).before(async ({mode}) => {
+				const video = await getYouTubeVideoElement();
 				switch (mode) {
 					case Mode.NORMAL:
-						(await getYouTubeVideoElement()).currentTime -= store.smallStep;
+						video.rewind(store.smallStep);
 						break;
 					case Mode.PRIMARY:
-						(await getYouTubeVideoElement()).currentTime -= store.bigStep;
+						video.rewind(store.bigStep);
 						break;
-					case Mode.TERTIARY:
-						(await getYouTubeVideoElement()).currentTime -= 1 / 30;
+					case Mode.SECONDARY:
 						break;
 				}
 			});
 			gamepad.for(LEFT_BUTTONS_RIGHT).before(async ({mode}) => {
+				const video = await getYouTubeVideoElement();
 				switch (mode) {
 					case Mode.NORMAL:
-						(await getYouTubeVideoElement()).currentTime += store.smallStep;
+						video.fastForward(store.smallStep);
 						break;
 					case Mode.PRIMARY:
-						(await getYouTubeVideoElement()).currentTime += store.bigStep;
+						video.fastForward(store.bigStep);
 						break;
-					case Mode.TERTIARY:
-						(await getYouTubeVideoElement()).currentTime += 1 / 30;
+					case Mode.SECONDARY:
 						break;
 				}
 			});
@@ -137,17 +149,6 @@ class GamepadController extends ReactiveController {
 						break;
 					case Mode.PRIMARY:
 						break;
-				}
-			});
-
-			gamepad.for(RIGHT_BUTTONS_TOP).before(({mode}) => {
-				switch (mode) {
-					case Mode.NORMAL:
-						break;
-					case Mode.PRIMARY:
-						break;
-					case Mode.SECONDARY:
-					case Mode.TERTIARY:
 				}
 			});
 

@@ -159,13 +159,19 @@ export class YouTubeVideo extends LitElement {
 	get currentTime() {
 		return this.#player.getCurrentTime();
 	}
-	/** @deprecated Use setCurrentTime instead */
+	/** @deprecated Use setCurrentTime, rewind or fastForward instead */
 	set currentTime(seconds: number) {
 		this.setCurrentTime(seconds);
 	}
 
-	setCurrentTime(seconds: number, allowSeekAhead = false) {
+	setCurrentTime(seconds: number, allowSeekAhead = true) {
 		this.#player.seekTo(seconds, allowSeekAhead);
+	}
+	rewind(offset: number, allowSeekAhead = true) {
+		this.setCurrentTime(this.currentTime - offset, allowSeekAhead);
+	}
+	fastForward(offset: number, allowSeekAhead = true) {
+		this.setCurrentTime(this.currentTime + offset, allowSeekAhead);
 	}
 
 	setPlaybackrate(rate: number) {
