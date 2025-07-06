@@ -18,6 +18,7 @@
     "@vdegenne/debouncer": "^1.0.3",
     "@vdegenne/forms": "^0.1.9",
     "@vdegenne/material-color-helpers": "^1.11.1",
+    "@vdegenne/mini-gamepad": "^0.3.3",
     "@vdegenne/mini-rest": "^0.2.1",
     "@vdegenne/rollup-plugin-minify-html": "^1.0.6",
     "@vdegenne/router": "file:../router",

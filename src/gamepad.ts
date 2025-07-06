@@ -1,85 +1,167 @@
-import gamectrl, {
-	getMode,
-	Modes,
-	setStateGamepad,
-	XBoxButton,
-} from 'esm-gamecontroller.js';
-import {cquerySelector} from 'html-vision';
+import {ReactiveController} from '@snar/lit';
+import {MGamepad, MiniGamepad, Mode} from '@vdegenne/mini-gamepad';
+import {getElement} from 'html-vision';
+import {state} from 'lit/decorators.js';
+import {getYouTubeVideoElement} from './utils.js';
+import {BIG_STEP, SMALL_STEP} from './constants.js';
 
-function shouldNotExecute() {
-	if (!document.hasFocus()) {
-		return true;
-	}
-	const speakerTest = document.querySelector<HTMLElement>('speaker-test');
-	if (speakerTest && speakerTest.hasAttribute('open')) {
-		return true;
-	}
-	return false;
-}
-function guard(callback: Function) {
-	return function () {
-		if (shouldNotExecute()) {
-			return;
-		}
-		callback();
-	};
-}
+class GamepadController extends ReactiveController {
+	@state() gamepad: MGamepad | undefined;
 
-gamectrl.on('connect', async (gamepad) => {
-	gamepad.axeThreshold = [0.3];
-	setStateGamepad(gamepad);
-	function register(
-		button: XBoxButton,
-		callback: (mode: Modes) => void,
-		type: 'before' | 'on' = 'before'
-	) {
-		gamepad[type](
-			button,
-			guard(() => {
-				const mode = getMode();
-				const buttonEl = getButtonElement(button);
+	get mapping() {
+		return this.gamepad?.mapping;
+	}
+
+	constructor() {
+		super();
+		const minigp = new MiniGamepad({
+			// pollSleepMs: 900,
+			toastModel: false,
+			focusDeadTimeMs: 200,
+		});
+		minigp.onConnect((gamepad) => {
+			this.gamepad = gamepad;
+			const {
+				LEFT_STICK_LEFT,
+				LEFT_STICK_RIGHT,
+				RIGHT_STICK_LEFT,
+				RIGHT_STICK_RIGHT,
+				RIGHT_BUTTONS_BOTTOM,
+				RIGHT_BUTTONS_RIGHT,
+				L1,
+				LEFT_BUTTONS_RIGHT,
+				LEFT_BUTTONS_BOTTOM,
+				RIGHT_BUTTONS_LEFT,
+				R1,
+				LEFT_BUTTONS_LEFT,
+				RIGHT_BUTTONS_TOP,
+				MIDDLE_LEFT,
+			} = gamepad.model.mapping;
+
+			gamepad.for(LEFT_STICK_LEFT).before(({mode}) => {
 				switch (mode) {
-					case Modes.NORMAL:
-						cquerySelector(`[gp-button="${button}"]`)?.click();
+					case Mode.NORMAL:
 						break;
-
-					case Modes.PRIMARY:
-						cquerySelector(`[gp-primary-button="${button}"]`)?.click();
+					case Mode.PRIMARY:
 						break;
-
-					case Modes.SECONDARY:
-						cquerySelector(`[gp-secondary-button="${button}"]`)?.click();
+					case Mode.SECONDARY:
 						break;
-
-					case Modes.TERTIARY:
-						cquerySelector(`[gp-tertiary-button="${button}"]`)?.click();
+					case Mode.TERTIARY:
 						break;
 				}
-				callback(mode);
-			})
-		);
+			});
+			gamepad.for(LEFT_STICK_RIGHT).before(({mode}) => {
+				switch (mode) {
+					case Mode.NORMAL:
+						break;
+					case Mode.TERTIARY:
+						break;
+				}
+			});
+			gamepad.for(RIGHT_BUTTONS_LEFT).before(async ({mode}) => {
+				switch (mode) {
+					case Mode.NORMAL:
+						(await getYouTubeVideoElement()).fullscreen();
+						break;
+				}
+			});
+
+			gamepad.for(RIGHT_STICK_LEFT).before(({mode}) => {
+				switch (mode) {
+					case Mode.NORMAL:
+						break;
+				}
+			});
+			gamepad.for(RIGHT_STICK_RIGHT).before(({mode}) => {
+				switch (mode) {
+					case Mode.NORMAL:
+						break;
+				}
+			});
+
+			gamepad.for(RIGHT_BUTTONS_BOTTOM).before(async ({mode}) => {
+				switch (mode) {
+					case Mode.NORMAL:
+						break;
+					case Mode.TERTIARY:
+						break;
+				}
+			});
+			gamepad.for(RIGHT_BUTTONS_RIGHT).before(({mode}) => {
+				if (mode === Mode.NORMAL) {
+				}
+			});
+
+			gamepad.for(L1).before(async ({mode}) => {
+				switch (mode) {
+					case Mode.NORMAL:
+						(await getYouTubeVideoElement()).toggle();
+						break;
+				}
+			});
+			gamepad.for(R1).before(({mode}) => {
+				if (mode === Mode.NORMAL) {
+				}
+			});
+
+			gamepad.for(LEFT_BUTTONS_LEFT).before(async ({mode}) => {
+				switch (mode) {
+					case Mode.NORMAL:
+						(await getYouTubeVideoElement()).currentTime -= SMALL_STEP;
+						break;
+					case Mode.PRIMARY:
+						(await getYouTubeVideoElement()).currentTime -= BIG_STEP;
+						break;
+					case Mode.TERTIARY:
+						(await getYouTubeVideoElement()).currentTime -= 1 / 30;
+						break;
+				}
+			});
+			gamepad.for(LEFT_BUTTONS_RIGHT).before(async ({mode}) => {
+				switch (mode) {
+					case Mode.NORMAL:
+						(await getYouTubeVideoElement()).currentTime += SMALL_STEP;
+						break;
+					case Mode.PRIMARY:
+						(await getYouTubeVideoElement()).currentTime += BIG_STEP;
+						break;
+					case Mode.TERTIARY:
+						(await getYouTubeVideoElement()).currentTime += 1 / 30;
+						break;
+				}
+			});
+
+			gamepad.for(LEFT_BUTTONS_BOTTOM).before(({mode}) => {
+				switch (mode) {
+					case Mode.NORMAL:
+						break;
+					case Mode.PRIMARY:
+						break;
+				}
+			});
+
+			gamepad.for(RIGHT_BUTTONS_TOP).before(({mode}) => {
+				switch (mode) {
+					case Mode.NORMAL:
+						break;
+					case Mode.PRIMARY:
+						break;
+					case Mode.SECONDARY:
+					case Mode.TERTIARY:
+				}
+			});
+
+			gamepad.for(MIDDLE_LEFT).before(({mode}) => {
+				switch (mode) {
+					case Mode.NORMAL:
+						break;
+
+					default:
+						break;
+				}
+			});
+		});
 	}
+}
 
-	register(XBoxButton.UP, (mode) => {});
-	register(XBoxButton.DOWN, (mode) => {});
-	register(XBoxButton.LEFT, (mode) => {});
-	register(XBoxButton.RIGHT, (mode) => {});
-
-	register(XBoxButton.A, (mode) => {});
-	register(XBoxButton.B, (mode) => {});
-	register(XBoxButton.X, (mode) => {});
-	register(XBoxButton.Y, (mode) => {});
-
-	register(XBoxButton.DPAD_UP, (mode) => {});
-	register(XBoxButton.DPAD_DOWN, (mode) => {});
-	register(XBoxButton.DPAD_LEFT, (mode) => {});
-	register(XBoxButton.DPAD_RIGHT, (mode) => {});
-
-	register(XBoxButton.LEFT_BUMPER, (mode) => {});
-	register(XBoxButton.RIGHT_BUMPER, (mode) => {});
-
-	register(XBoxButton.RIGHT_STICK_UP, (mode) => {});
-	register(XBoxButton.RIGHT_STICK_DOWN, (mode) => {});
-	register(XBoxButton.RIGHT_STICK_LEFT, (mode) => {});
-	register(XBoxButton.RIGHT_STICK_RIGHT, (mode) => {});
-});
+export const gamepadCtrl = new GamepadController();

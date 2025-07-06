@@ -12,6 +12,7 @@
 			"lit",
 			"lit/decorators.js",
 			"material-shell",
+			"youtube",
 			"./types.d.ts"
 		]
 	},

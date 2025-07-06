@@ -39,7 +39,7 @@ import {Hash, Router} from '@vdegenne/router';
 import {store} from './store.js';
 import toast from 'toastit';
 
-export const hash = new Hash<{videoId: string}>();
+export const hash = new Hash<{videoId: string; startTime: number}>();
 
 export const router = new Router(async () => {
 	await store.updateComplete;

@@ -1,5 +1,7 @@
+import {getElement} from 'html-vision';
 import {type PropertyValues} from 'snar';
 import {toast} from 'toastit';
+import {type YouTubeVideo} from './youtube.js';
 
 export function copyToClipboard(text: string) {
 	navigator.clipboard.writeText(text);
@@ -67,7 +69,7 @@ export function getElementsTree(node: Element): Promise<Element[]> {
 }
 export async function getElementInTree(
 	from: Element,
-	condition: (element: Element) => boolean
+	condition: (element: Element) => boolean,
 ): Promise<Element | undefined> {
 	for (const element of await getElementsTree(from)) {
 		if (condition(element)) {
@@ -149,9 +151,12 @@ export async function loadDataFromFile(): Promise<string> {
 
 export function propertyValuesToJson<T>(
 	changed: PropertyValues<T>,
-	object: T
+	object: T,
 ): Partial<T> {
 	return Object.fromEntries(
-		[...changed.keys()].map((key) => [key, object[key]])
+		[...changed.keys()].map((key) => [key, object[key]]),
 	) as Partial<T>;
+}
+export async function getYouTubeVideoElement() {
+	return (await getElement('youtube-video')) as YouTubeVideo;
 }
