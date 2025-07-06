@@ -168,10 +168,18 @@ export class YouTubeVideo extends LitElement {
 		this.#player.seekTo(seconds, allowSeekAhead);
 	}
 	rewind(offset: number, allowSeekAhead = true) {
-		this.setCurrentTime(this.currentTime - offset, allowSeekAhead);
+		this.setCurrentTime(
+			this.currentTime -
+				(typeof offset === 'string' ? parseFloat(offset) : offset),
+			allowSeekAhead,
+		);
 	}
 	fastForward(offset: number, allowSeekAhead = true) {
-		this.setCurrentTime(this.currentTime + offset, allowSeekAhead);
+		this.setCurrentTime(
+			this.currentTime +
+				(typeof offset === 'string' ? parseFloat(offset) : offset),
+			allowSeekAhead,
+		);
 	}
 
 	setPlaybackrate(rate: number) {
