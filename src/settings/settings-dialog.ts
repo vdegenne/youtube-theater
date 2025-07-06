@@ -1,15 +1,15 @@
 import type {MdDialog} from '@material/web/all.js';
 import {withController} from '@snar/lit';
+import {FormBuilder} from '@vdegenne/forms/FormBuilder';
 import {customElement} from 'custom-element-decorator';
 import {html, LitElement} from 'lit';
 import {withStyles} from 'lit-with-styles';
 import {query, state} from 'lit/decorators.js';
-import {FormBuilder} from '@vdegenne/forms/FormBuilder';
-import {store} from '../store.js';
-import {themeStore} from '../styles/themeStore.js';
-import {renderThemeElements} from '../styles/theme-elements.js';
-import styles from './settings-dialog.css?inline';
 import '../material/dialog-patch.js';
+import {store} from '../store.js';
+import {renderThemeElements} from '../styles/theme-elements.js';
+import {themeStore} from '../styles/themeStore.js';
+import styles from './settings-dialog.css?inline';
 
 let F = new FormBuilder(store);
 
@@ -40,14 +40,26 @@ export class SettingsDialog extends LitElement {
 					id="form"
 					class="flex flex-col gap-9"
 				>
-					<md-list class="p-0" style="--forms-switch-padding:initial">
+					<section>
+						<h3>Video</h3>
+						${F.TEXTFIELD('Small step', 'smallStep', {
+							suffixText: 'seconds',
+							resetButton: false,
+						})}
+						${F.TEXTFIELD('Big step', 'bigStep', {
+							suffixText: 'seconds',
+							resetButton: false,
+						})}
+					</section>
+
+					<md-list class="p-0" style="--forms-switch-padding:initial" hidden>
 						<!-- put the switches here -->
 					</md-list>
 
-					<div class="mb-5">
-						<p>Theme</p>
+					<section class="mb-5">
+						<h3>Theme</h3>
 						${renderThemeElements()}
-					</div>
+					</section>
 				</form>
 
 				<div slot="actions">

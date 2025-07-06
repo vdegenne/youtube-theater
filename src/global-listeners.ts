@@ -1,5 +1,5 @@
 import {cquerySelector} from 'html-vision';
-import {getThemeStore} from './imports.js';
+import {getThemeStore, openSettingsDialog} from './imports.js';
 
 window.addEventListener('keydown', async (event: KeyboardEvent) => {
 	// console.log(event)
@@ -21,6 +21,10 @@ window.addEventListener('keydown', async (event: KeyboardEvent) => {
 	switch (event.key) {
 		case 'd':
 			(await getThemeStore()).toggleMode();
+			break;
+
+		case 's':
+			openSettingsDialog();
 			break;
 	}
 });

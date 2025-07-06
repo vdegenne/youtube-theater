@@ -1,0 +1,8 @@
+section {
+	display: flex;
+	flex-direction: column;
+	gap: 18px;
+}
+section h3 {
+	margin: 9px 0;
+}

@@ -6,17 +6,14 @@ export async function getThemeStore() {
 	return themeStore;
 }
 
-export async function getSettingsDialog(importIfNotFound = false) {
+export async function getSettingsDialog() {
 	try {
 		const dialog = await getElement<SettingsDialog>('settings-dialog');
 		return dialog;
 	} catch {
-		if (importIfNotFound) {
-			const {settingsDialog} = await import('./settings/settings-dialog.js');
-			return settingsDialog;
-		}
+		const {settingsDialog} = await import('./settings/settings-dialog.js');
+		return settingsDialog;
 	}
-	return undefined;
 }
 
 export async function openSettingsDialog() {

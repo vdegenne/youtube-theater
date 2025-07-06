@@ -3,9 +3,9 @@ import {bindInput} from '@vdegenne/forms/bindInput';
 import {css, html} from 'lit';
 import {withStyles} from 'lit-with-styles';
 import {customElement, state} from 'lit/decorators.js';
+import {hash} from '../router.js';
 import {store} from '../store.js';
 import {PageElement} from './PageElement.js';
-import {hash, router} from '../router.js';
 
 @customElement('main-page')
 @withController(store)

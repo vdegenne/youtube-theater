@@ -3,7 +3,7 @@ import {MGamepad, MiniGamepad, Mode} from '@vdegenne/mini-gamepad';
 import {getElement} from 'html-vision';
 import {state} from 'lit/decorators.js';
 import {getYouTubeVideoElement} from './utils.js';
-import {BIG_STEP, SMALL_STEP} from './constants.js';
+import {store} from './store.js';
 
 class GamepadController extends ReactiveController {
 	@state() gamepad: MGamepad | undefined;
@@ -107,10 +107,10 @@ class GamepadController extends ReactiveController {
 			gamepad.for(LEFT_BUTTONS_LEFT).before(async ({mode}) => {
 				switch (mode) {
 					case Mode.NORMAL:
-						(await getYouTubeVideoElement()).currentTime -= SMALL_STEP;
+						(await getYouTubeVideoElement()).currentTime -= store.smallStep;
 						break;
 					case Mode.PRIMARY:
-						(await getYouTubeVideoElement()).currentTime -= BIG_STEP;
+						(await getYouTubeVideoElement()).currentTime -= store.bigStep;
 						break;
 					case Mode.TERTIARY:
 						(await getYouTubeVideoElement()).currentTime -= 1 / 30;
@@ -120,10 +120,10 @@ class GamepadController extends ReactiveController {
 			gamepad.for(LEFT_BUTTONS_RIGHT).before(async ({mode}) => {
 				switch (mode) {
 					case Mode.NORMAL:
-						(await getYouTubeVideoElement()).currentTime += SMALL_STEP;
+						(await getYouTubeVideoElement()).currentTime += store.smallStep;
 						break;
 					case Mode.PRIMARY:
-						(await getYouTubeVideoElement()).currentTime += BIG_STEP;
+						(await getYouTubeVideoElement()).currentTime += store.bigStep;
 						break;
 					case Mode.TERTIARY:
 						(await getYouTubeVideoElement()).currentTime += 1 / 30;

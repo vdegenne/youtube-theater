@@ -1,10 +1,13 @@
 import {ReactiveController, state} from '@snar/lit';
-// import { saveToLocalStorage } from "snar-save-to-local-storage";
+import {saveToLocalStorage} from 'snar-save-to-local-storage';
 import {FormBuilder} from '@vdegenne/forms/FormBuilder';
 
-// @saveToLocalStorage('something')
+@saveToLocalStorage('youtube-theater')
 export class AppStore extends ReactiveController {
 	@state() page: Page = 'main';
+
+	@state() smallStep = 2;
+	@state() bigStep = 5;
 }
 
 const store = new AppStore();
