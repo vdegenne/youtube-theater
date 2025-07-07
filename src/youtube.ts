@@ -93,11 +93,11 @@ export class YouTubeVideo extends LitElement {
 					start: this.startTime,
 					playsinline: 0,
 
-					controls: 0, // Hide player controls
-					modestbranding: 1, // Remove YouTube logo in the control bar
-					showinfo: 0, // Deprecated, but doesn't do much anymore
-					rel: 0, // Disable related videos at end
-					fs: 0, // Hide fullscreen button
+					// controls: 0, // Hide player controls
+					// modestbranding: 1, // Remove YouTube logo in the control bar
+					// showinfo: 0, // Deprecated, but doesn't do much anymore
+					// rel: 0, // Disable related videos at end
+					// fs: 0, // Hide fullscreen button
 				},
 				events: {
 					onReady: () => {
