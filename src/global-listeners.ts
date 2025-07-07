@@ -1,5 +1,6 @@
 import {cquerySelector} from 'html-vision';
 import {getThemeStore, openSettingsDialog} from './imports.js';
+import {getYouTubeVideoElement} from './utils.js';
 
 window.addEventListener('keydown', async (event: KeyboardEvent) => {
 	// console.log(event)
@@ -25,6 +26,11 @@ window.addEventListener('keydown', async (event: KeyboardEvent) => {
 
 		case 's':
 			openSettingsDialog();
+			break;
+
+		case 'F12':
+			event.preventDefault();
+			(await getYouTubeVideoElement()).toggle();
 			break;
 	}
 });
