@@ -82,10 +82,10 @@ class GamepadController extends ReactiveController {
 				const video = await getYouTubeVideoElement();
 				switch (mode) {
 					case Mode.NORMAL:
-						video.rewind(1 / 30);
+						video.rewind(store.tinyStep);
 						break;
 					case Mode.PRIMARY:
-						video.rewind(store.tinyStep);
+						video.rewind(1 / 30);
 						break;
 				}
 			});
@@ -102,10 +102,10 @@ class GamepadController extends ReactiveController {
 				const video = await getYouTubeVideoElement();
 				switch (mode) {
 					case Mode.NORMAL:
-						video.fastForward(1 / 30);
+						video.fastForward(store.tinyStep);
 						break;
 					case Mode.PRIMARY:
-						video.fastForward(store.tinyStep);
+						video.fastForward(1 / 30);
 						break;
 				}
 			});
