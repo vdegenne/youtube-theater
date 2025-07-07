@@ -52,6 +52,11 @@ export class SettingsDialog extends LitElement {
 							suffixText: 'seconds',
 							resetButton: false,
 						})}
+						${F.TEXTFIELD('Tiny step', 'tinyStep', {
+							type: 'number',
+							suffixText: 'seconds',
+							resetButton: false,
+						})}
 					</section>
 
 					<md-list class="p-0" style="--forms-switch-padding:initial" hidden>

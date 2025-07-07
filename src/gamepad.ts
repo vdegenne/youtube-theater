@@ -84,6 +84,9 @@ class GamepadController extends ReactiveController {
 					case Mode.NORMAL:
 						video.rewind(1 / 30);
 						break;
+					case Mode.PRIMARY:
+						video.rewind(store.tinyStep);
+						break;
 				}
 			});
 
@@ -100,6 +103,9 @@ class GamepadController extends ReactiveController {
 				switch (mode) {
 					case Mode.NORMAL:
 						video.fastForward(1 / 30);
+						break;
+					case Mode.PRIMARY:
+						video.fastForward(store.tinyStep);
 						break;
 				}
 			});
