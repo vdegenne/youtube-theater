@@ -6,6 +6,7 @@ import {FormBuilder} from '@vdegenne/forms/FormBuilder';
 export class AppStore extends ReactiveController {
 	@state() page: Page = 'main';
 
+	@state() tinyStep = 1;
 	@state() smallStep = 4;
 	@state() bigStep = 7;
 }
