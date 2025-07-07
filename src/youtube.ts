@@ -182,8 +182,18 @@ export class YouTubeVideo extends LitElement {
 		);
 	}
 
+	get playbackRate() {
+		return this.#player.getPlaybackRate();
+	}
 	setPlaybackrate(rate: number) {
 		this.#player.setPlaybackRate(rate);
+	}
+	increasePlaybackRate(offset: number = 0.25) {
+		this.setPlaybackrate(this.playbackRate + offset);
+	}
+
+	decreasePlaybackRate(offset: number = 0.25) {
+		this.setPlaybackrate(this.playbackRate - offset);
 	}
 
 	render() {

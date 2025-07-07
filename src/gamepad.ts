@@ -115,10 +115,16 @@ class GamepadController extends ReactiveController {
 					case Mode.NORMAL:
 						(await getYouTubeVideoElement()).toggle();
 						break;
+					case Mode.SECONDARY:
+						(await getYouTubeVideoElement()).decreasePlaybackRate();
+						break;
 				}
 			});
-			gamepad.for(R1).before(({mode}) => {
-				if (mode === Mode.NORMAL) {
+			gamepad.for(R1).before(async ({mode}) => {
+				switch (mode) {
+					case Mode.PRIMARY:
+						(await getYouTubeVideoElement()).decreasePlaybackRate();
+						break;
 				}
 			});
 
