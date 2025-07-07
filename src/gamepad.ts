@@ -107,7 +107,7 @@ class GamepadController extends ReactiveController {
 			gamepad.for(L1).before(async ({mode}) => {
 				switch (mode) {
 					case Mode.NORMAL:
-						// (await getYouTubeVideoElement()).toggle();
+						(await getYouTubeVideoElement()).toggle();
 						break;
 				}
 			});
